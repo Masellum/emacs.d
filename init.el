@@ -13,7 +13,7 @@
    '("37768a79b479684b0756dec7c0fc7652082910c37d8863c35b702db3f16000f8" default))
  '(helm-completion-style 'emacs)
  '(package-selected-packages
-   '(evil-nerd-commenter switch-window helm-projectile projectile flycheck nord-theme smooth-scrolling flyspell-correct-helm flyspell-lazy evil evil-leader helm js2-mode org)))
+   '(powerline evil-nerd-commenter switch-window helm-projectile projectile flycheck nord-theme smooth-scrolling flyspell-correct-helm flyspell-lazy evil evil-leader helm js2-mode org)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -36,7 +36,17 @@
 
 ;; Theme settings
 (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
-(load-theme 'nord t)
+
+(defun load-nord-theme (frame)
+  (with-selected-frame frame
+     (load-theme 'nord t)))
+
+(if (daemonp)
+  (add-hook 'after-make-frame-functions #'load-nord-theme)
+  (load-theme 'nord t))
+
+(require 'powerline)
+(powerline-default-theme)
 
 ;; global minor mode
 (global-display-line-numbers-mode)
